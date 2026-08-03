@@ -1,0 +1,315 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(ADMIN)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  TRAINER
+}
+
+model Member {
+  id               String         @id @default(cuid())
+  memberId         String         @unique // UF-0001
+  photo            String?
+  fullName         String
+  phone            String         @unique
+  email            String?
+  dob              DateTime?
+  gender           Gender
+  emergencyContact String?
+  emergencyPhone   String?
+  address          String?
+  occupation       String?
+  joiningDate      DateTime       @default(now())
+  membershipType   MembershipType
+  expiryDate       DateTime
+  status           MemberStatus   @default(ACTIVE)
+  trainerId        String?
+  batch            String?
+  height           Float?
+  weight           Float?
+  bmi              Float?
+  bodyFat          Float?
+  muscleMass       Float?
+  bloodPressure    Boolean        @default(false)
+  diabetes         Boolean        @default(false)
+  backPain         Boolean        @default(false)
+  kneePain         Boolean        @default(false)
+  heartIssues      Boolean        @default(false)
+  allergies        String?
+  medicalNotes     String?
+  currentGoal      GoalType?
+  beforePhoto      String?
+  afterPhoto       String?
+  notes            String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  trainer    Trainer?     @relation(fields: [trainerId], references: [id])
+  payments   Payment[]
+  attendance Attendance[]
+
+  @@map("members")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum MembershipType {
+  MONTHLY
+  QUARTERLY
+  HALF_YEARLY
+  ANNUAL
+  CORPORATE
+  STUDENT
+  PT
+}
+
+enum MemberStatus {
+  ACTIVE
+  EXPIRED
+  PENDING
+  SUSPENDED
+}
+
+enum GoalType {
+  WEIGHT_LOSS
+  MUSCLE_GAIN
+  MAINTENANCE
+  ATHLETIC_PERFORMANCE
+  REHABILITATION
+}
+
+model Trainer {
+  id             String   @id @default(cuid())
+  photo          String?
+  fullName       String
+  phone          String
+  email          String?
+  specialization String[]
+  experience     Int
+  certifications String[]
+  bio            String
+  isActive       Boolean  @default(true)
+  joinedDate     DateTime @default(now())
+  instagram      String?
+  sortOrder      Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  members Member[]
+
+  @@map("trainers")
+}
+
+model Payment {
+  id              String         @id @default(cuid())
+  memberId        String
+  amount          Float
+  amountPaid      Float
+  amountDue       Float          @default(0)
+  paymentDate     DateTime       @default(now())
+  dueDate         DateTime?
+  paymentMethod   PaymentMethod  @default(CASH)
+  status          PaymentStatus  @default(PAID)
+  membershipType  MembershipType
+  membershipStart DateTime
+  membershipEnd   DateTime
+  receiptNumber   String         @unique
+  gstAmount       Float?
+  notes           String?
+  createdAt       DateTime       @default(now())
+
+  member Member @relation(fields: [memberId], references: [id])
+
+  @@map("payments")
+}
+
+enum PaymentMethod {
+  CASH
+  UPI
+  CARD
+  BANK_TRANSFER
+  CHEQUE
+}
+
+enum PaymentStatus {
+  PAID
+  PENDING
+  PARTIAL
+  ADVANCE
+}
+
+model Attendance {
+  id       String    @id @default(cuid())
+  memberId String
+  date     DateTime  @default(now())
+  checkIn  DateTime  @default(now())
+  checkOut DateTime?
+  batch    String?
+
+  member Member @relation(fields: [memberId], references: [id])
+
+  @@map("attendance")
+}
+
+model MembershipPlan {
+  id            String         @id @default(cuid())
+  name          String
+  type          MembershipType
+  duration      Int
+  price         Float
+  originalPrice Float?
+  features      String[]
+  isPopular     Boolean        @default(false)
+  isActive      Boolean        @default(true)
+  badge         String?
+  sortOrder     Int            @default(0)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  @@map("membership_plans")
+}
+
+model Testimonial {
+  id             String            @id @default(cuid())
+  memberName     String
+  memberPhoto    String?
+  rating         Int
+  review         String
+  transformation String?
+  weightLost     Float?
+  duration       String?
+  isApproved     Boolean           @default(false)
+  source         TestimonialSource @default(DIRECT)
+  createdAt      DateTime          @default(now())
+
+  @@map("testimonials")
+}
+
+enum TestimonialSource {
+  GOOGLE
+  DIRECT
+  INSTAGRAM
+}
+
+model GalleryItem {
+  id           String    @id @default(cuid())
+  url          String
+  thumbnailUrl String?
+  type         MediaType @default(PHOTO)
+  caption      String?
+  category     String    @default("gym")
+  isPublished  Boolean   @default(true)
+  sortOrder    Int       @default(0)
+  createdAt    DateTime  @default(now())
+
+  @@map("gallery_items")
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+  REEL
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String
+  content     String
+  coverImage  String?
+  category    String    @default("tips")
+  tags        String[]
+  author      String    @default("UGRAMM FITNESS")
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  readTime    Int       @default(5)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("blog_posts")
+}
+
+model PromoBanner {
+  id          String    @id @default(cuid())
+  title       String
+  subtitle    String?
+  description String
+  ctaText     String
+  ctaLink     String?
+  bgColor     String?
+  image       String?
+  expiresAt   DateTime?
+  isActive    Boolean   @default(true)
+  showPopup   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+
+  @@map("promo_banners")
+}
+
+model Enquiry {
+  id           String        @id @default(cuid())
+  fullName     String
+  phone        String
+  email        String?
+  message      String?
+  interestedIn EnquiryType   @default(MEMBERSHIP)
+  source       EnquirySource @default(WEBSITE)
+  status       EnquiryStatus @default(NEW)
+  createdAt    DateTime      @default(now())
+
+  @@map("enquiries")
+}
+
+enum EnquiryType {
+  MEMBERSHIP
+  PT
+  GENERAL
+}
+
+enum EnquirySource {
+  WEBSITE
+  WHATSAPP
+  INSTAGRAM
+  WALK_IN
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  CONVERTED
+  NOT_INTERESTED
+}
+
+model GymSettings {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("gym_settings")
+}
