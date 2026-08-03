@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { MessageCircle, ChevronDown } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import LionSVG from '@/components/common/LionSVG';
 
 const ParticleBackground = dynamic(
@@ -24,6 +25,17 @@ export default function Hero() {
     <section className="relative w-full min-h-screen flex items-center overflow-hidden bg-[#0A0A0A]">
       {/* Background layers */}
       <div className="absolute inset-0 z-0">
+        {/* Real lion photo */}
+        <Image
+          src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1920&q=80"
+          alt="Lion"
+          fill
+          priority
+          className="object-cover object-center"
+          style={{ opacity: 0.35 }}
+        />
+        {/* Dark overlay to keep text readable */}
+        <div className="absolute inset-0 bg-black/60" />
         {/* Radial gold gradient */}
         <div
           className="absolute inset-0"
