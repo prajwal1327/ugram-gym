@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, User, Share2, Tag, Copy, ChevronRight } from 'lucide-react';
 import type { Metadata } from 'next';
