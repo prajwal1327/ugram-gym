@@ -84,12 +84,12 @@ function FormInput({
 }: { label: string; required?: boolean } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
-      <label className="block text-white/50 text-xs font-medium uppercase tracking-wider mb-1.5">
+      <label className="block text-white/60 text-xs font-semibold uppercase tracking-wider mb-1.5">
         {label} {required && <span className="text-red-400">*</span>}
       </label>
       <input
         {...props}
-        className="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#C9A84C]/40 transition-colors"
+        className="w-full bg-[#1a1a1a] border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C9A84C] focus:bg-[#1e1e1e] transition-all"
       />
     </div>
   );
@@ -316,7 +316,7 @@ export default function AddMemberPage() {
               <select
                 value={form.membershipType}
                 onChange={(e) => set('membershipType', e.target.value)}
-                className="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#C9A84C]/40 transition-colors appearance-none cursor-pointer"
+                className="w-full bg-[#1a1a1a] border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#C9A84C] transition-all cursor-pointer"
               >
                 {MEMBERSHIP_TYPES.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>
@@ -351,7 +351,7 @@ export default function AddMemberPage() {
               <select
                 value={form.trainerId}
                 onChange={(e) => set('trainerId', e.target.value)}
-                className="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#C9A84C]/40 transition-colors appearance-none cursor-pointer"
+                className="w-full bg-[#1a1a1a] border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm focus:outline-none focus:border-[#C9A84C] transition-all cursor-pointer"
               >
                 {TRAINERS.map((t) => (
                   <option key={t.value} value={t.value}>{t.label}</option>
@@ -433,7 +433,7 @@ export default function AddMemberPage() {
                 onChange={(e) => set('medicalNotes', e.target.value)}
                 rows={3}
                 placeholder="Any additional medical information..."
-                className="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#C9A84C]/40 transition-colors resize-none"
+                className="w-full bg-[#1a1a1a] border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C9A84C] focus:bg-[#1e1e1e] transition-all resize-none"
               />
             </div>
           </div>
@@ -476,7 +476,7 @@ export default function AddMemberPage() {
                 onChange={(e) => set('notes', e.target.value)}
                 rows={3}
                 placeholder="Any additional notes about this member..."
-                className="w-full bg-white/5 border border-white/8 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/20 focus:outline-none focus:border-[#C9A84C]/40 transition-colors resize-none"
+                className="w-full bg-[#1a1a1a] border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm placeholder-white/30 focus:outline-none focus:border-[#C9A84C] focus:bg-[#1e1e1e] transition-all resize-none"
               />
             </div>
           </div>

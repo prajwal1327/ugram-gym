@@ -33,7 +33,31 @@ body {
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
-  cursor: none; /* custom cursor */
+  cursor: none;
+}
+
+/* Restore real cursor in admin panel */
+.admin-area,
+.admin-area * {
+  cursor: auto !important;
+}
+.admin-area input,
+.admin-area select,
+.admin-area textarea {
+  cursor: text !important;
+}
+.admin-area button,
+.admin-area a,
+.admin-area [role="button"],
+.admin-area label[for],
+.admin-area label.cursor-pointer {
+  cursor: pointer !important;
+}
+
+/* Select option dark styling */
+select option {
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 /* Custom scrollbar */

@@ -143,7 +143,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   );
 
   return (
-    <div className="min-h-screen flex" style={{ background: '#0A0A0A' }}>
+    <div className="admin-area min-h-screen flex relative" style={{ background: '#0A0A0A' }}>
+      {/* Lion watermark */}
+      <div className="fixed inset-0 z-0 pointer-events-none flex items-center justify-center lg:ml-[260px]" aria-hidden>
+        <LionSVG className="w-[500px] h-[500px] opacity-[0.025]" />
+      </div>
       {/* Desktop Sidebar */}
       <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[260px] z-40">
         {sidebar}
