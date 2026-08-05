@@ -31,7 +31,7 @@ export default function Hero() {
           alt="Lion"
           fill
           priority
-          className="object-cover object-top"
+          className="object-cover object-top hero-lion-photo"
           style={{ opacity: 0.55 }}
         />
         {/* Dark gradient overlay — darker at bottom to keep text readable */}
