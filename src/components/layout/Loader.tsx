@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useState, useRef, type FC } from 'react';
-import LionSVG from '@/components/common/LionSVG';
+import Image from 'next/image';
 
 interface LoaderProps {
   onComplete?: () => void;
@@ -112,19 +112,24 @@ const Loader: FC<LoaderProps> = ({ onComplete }) => {
             />
           ))}
 
-          {/* Lion SVG */}
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, scale: 0.55 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{
-              duration: 0.9,
-              ease: [0.34, 1.3, 0.64, 1],
-            }}
+            transition={{ duration: 0.9, ease: [0.34, 1.3, 0.64, 1] }}
             className="relative mb-7"
           >
-            {/* Halo glow behind lion */}
-            <div className="absolute inset-0 blur-2xl bg-[#C9A84C]/15 rounded-full scale-110 pointer-events-none" />
-            <LionSVG size={128} color="#C9A84C" />
+            <div className="absolute inset-0 blur-2xl bg-[#C9A84C]/20 rounded-full scale-125 pointer-events-none" />
+            <div className="relative w-32 h-32" style={{ filter: 'drop-shadow(0 0 28px rgba(201,168,76,0.5))' }}>
+              <Image
+                src="/images/logo.jpeg"
+                alt="UGRAMM FITNESS"
+                fill
+                className="object-cover rounded-full"
+                style={{ border: '2.5px solid rgba(201,168,76,0.5)' }}
+                priority
+              />
+            </div>
           </motion.div>
 
           {/* Brand name — letter-by-letter reveal */}

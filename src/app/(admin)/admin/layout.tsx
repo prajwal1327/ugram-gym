@@ -82,20 +82,23 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       {/* ── Sidebar header with lion ── */}
       <div style={{ position: 'relative', overflow: 'hidden', padding: '20px 20px 16px', borderBottom: '1px solid rgba(201,168,76,0.15)' }}>
-        {/* Lion photo background */}
+        {/* Logo / Lion background */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=400&q=80"
+          src="/images/lion-crown.webp"
           alt=""
           aria-hidden="true"
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.12 }}
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', opacity: 0.14 }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(0,0,0,0.9) 0%, rgba(201,168,76,0.05) 100%)' }} />
         {/* Content */}
         <div style={{ position: 'relative', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <div style={{ width: 44, height: 44, borderRadius: '50%', border: '2px solid rgba(201,168,76,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(201,168,76,0.1)', flexShrink: 0 }}>
-            <span style={{ fontSize: 22 }}>🦁</span>
-          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/logo.jpeg"
+            alt="UGRAMM FITNESS Logo"
+            style={{ width: 46, height: 46, borderRadius: '50%', border: '2px solid rgba(201,168,76,0.6)', objectFit: 'cover', flexShrink: 0, filter: 'drop-shadow(0 0 10px rgba(201,168,76,0.3))' }}
+          />
           <div>
             <p style={{ color: '#C9A84C', fontWeight: 800, fontSize: 15, letterSpacing: '0.15em', textTransform: 'uppercase', lineHeight: 1.2 }}>UGRAMM FITNESS</p>
             <p style={{ color: 'rgba(255,255,255,0.35)', fontSize: 10, letterSpacing: '0.25em', textTransform: 'uppercase', marginTop: 2 }}>Admin Panel</p>
@@ -143,10 +146,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none', overflow: 'hidden' }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=1920&q=80"
+          src="/images/lion-crown.webp"
           alt=""
           aria-hidden="true"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', opacity: 0.04, animation: 'adminLionPan 25s ease-in-out infinite alternate' }}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', opacity: 0.05, animation: 'adminLionPan 25s ease-in-out infinite alternate' }}
         />
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse 70% 70% at 60% 50%, rgba(201,168,76,0.03) 0%, transparent 70%)' }} />
       </div>

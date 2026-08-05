@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import LionSVG from '@/components/common/LionSVG';
+import Image from 'next/image';
 
 const QUICK_LINKS = [
   { href: '/',                  label: 'Home' },
@@ -58,16 +58,20 @@ function WhatsAppIcon() {
 export default function Footer() {
   return (
     <footer className="relative bg-[#0A0A0A] overflow-hidden" aria-label="Site footer">
-      {/* Gold gradient top border */}
+      {/* Gold top border */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/60 to-transparent" />
       <div className="absolute top-0 inset-x-0 h-8 bg-gradient-to-b from-[#C9A84C]/5 to-transparent pointer-events-none" />
 
-      {/* Lion watermark — absolute center */}
-      <div
-        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        aria-hidden="true"
-      >
-        <LionSVG size={420} color="#C9A84C" opacity={0.025} />
+      {/* Crown lion watermark */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" aria-hidden="true">
+        <Image
+          src="/images/lion-crown.webp"
+          alt=""
+          fill
+          className="object-cover object-center"
+          style={{ opacity: 0.03 }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A] opacity-80" />
       </div>
 
       <div className="relative max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +82,18 @@ export default function Footer() {
           {/* Column 1 — Brand */}
           <div>
             <Link href="/" className="flex items-center gap-3 mb-5 group" aria-label="UGRAMM FITNESS">
-              <LionSVG size={42} color="#C9A84C" />
+              <div
+                className="relative w-14 h-14 shrink-0"
+                style={{ filter: 'drop-shadow(0 0 12px rgba(201,168,76,0.3))' }}
+              >
+                <Image
+                  src="/images/logo.jpeg"
+                  alt="UGRAMM FITNESS Logo"
+                  fill
+                  className="object-cover rounded-full transition-transform duration-300 group-hover:scale-105"
+                  style={{ border: '2px solid rgba(201,168,76,0.4)' }}
+                />
+              </div>
               <div>
                 <div
                   className="text-xl font-black tracking-[0.18em] bg-gradient-to-r from-[#C9A84C] via-[#E8D5A3] to-[#C9A84C] bg-clip-text text-transparent leading-tight"
@@ -87,7 +102,7 @@ export default function Footer() {
                   UGRAMM FITNESS
                 </div>
                 <div
-                  className="text-[#A1A1AA] text-[9px] tracking-[0.32em] uppercase mt-0.5"
+                  className="text-[#A1A1AA] text-[8px] tracking-[0.32em] uppercase mt-0.5"
                   style={{ fontFamily: 'var(--font-montserrat)' }}
                 >
                   RISE. ROAR. RULE.
@@ -178,7 +193,6 @@ export default function Footer() {
               Contact Us
             </h3>
             <address className="not-italic space-y-4">
-              {/* Address */}
               <div className="flex gap-3">
                 <svg className="w-4 h-4 text-[#C9A84C] mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -189,38 +203,27 @@ export default function Footer() {
                 </p>
               </div>
 
-              {/* Phone */}
               <a href="tel:+917019497000" className="flex gap-3 group">
                 <svg className="w-4 h-4 text-[#C9A84C] mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                <span
-                  className="text-[#A1A1AA] group-hover:text-[#C9A84C] text-sm transition-colors duration-200"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
-                  +91 70194 97XXX
+                <span className="text-[#A1A1AA] group-hover:text-[#C9A84C] text-sm transition-colors duration-200" style={{ fontFamily: 'var(--font-inter)' }}>
+                  +91 70194 97000
                 </span>
               </a>
 
-              {/* WhatsApp */}
               <a
                 href="https://wa.me/917019497000?text=Hi!%20I%20want%20to%20join%20UGRAMM%20FITNESS."
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex gap-3 group"
               >
-                <span className="text-[#25D366] mt-0.5">
-                  <WhatsAppIcon />
-                </span>
-                <span
-                  className="text-[#A1A1AA] group-hover:text-[#25D366] text-sm transition-colors duration-200"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
+                <span className="text-[#25D366] mt-0.5"><WhatsAppIcon /></span>
+                <span className="text-[#A1A1AA] group-hover:text-[#25D366] text-sm transition-colors duration-200" style={{ fontFamily: 'var(--font-inter)' }}>
                   WhatsApp Chat
                 </span>
               </a>
 
-              {/* Hours */}
               <div className="flex gap-3">
                 <svg className="w-4 h-4 text-[#C9A84C] mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -238,16 +241,10 @@ export default function Footer() {
         <div className="py-9 border-t border-[#C9A84C]/10">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h3
-                className="text-white text-base font-bold mb-1"
-                style={{ fontFamily: 'var(--font-montserrat)' }}
-              >
+              <h3 className="text-white text-base font-bold mb-1" style={{ fontFamily: 'var(--font-montserrat)' }}>
                 Join Our Fitness Community
               </h3>
-              <p
-                className="text-[#A1A1AA] text-sm"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
+              <p className="text-[#A1A1AA] text-sm" style={{ fontFamily: 'var(--font-inter)' }}>
                 Get tips, updates, and exclusive offers straight to your inbox.
               </p>
             </div>
@@ -279,20 +276,13 @@ export default function Footer() {
         {/* ─── Bottom bar ─── */}
         <div className="py-5 border-t border-[#C9A84C]/10 flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-5 text-center">
-            <p
-              className="text-[#A1A1AA]/70 text-xs"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
-              © 2024 UGRAMM FITNESS. All rights reserved.
+            <p className="text-[#A1A1AA]/70 text-xs" style={{ fontFamily: 'var(--font-inter)' }}>
+              © 2026 UGRAMM FITNESS. All rights reserved.
             </p>
-            <p
-              className="text-[#A1A1AA]/40 text-xs"
-              style={{ fontFamily: 'var(--font-inter)' }}
-            >
+            <p className="text-[#A1A1AA]/40 text-xs" style={{ fontFamily: 'var(--font-inter)' }}>
               Made with ❤️ in Bidar, Karnataka
             </p>
           </div>
-
           <nav aria-label="Legal links" className="flex items-center gap-4">
             {[
               { href: '/privacy', label: 'Privacy Policy' },
@@ -300,16 +290,10 @@ export default function Footer() {
               { href: '/refund',  label: 'Refund Policy' },
             ].map(({ href, label }, i, arr) => (
               <span key={href} className="flex items-center gap-4">
-                <Link
-                  href={href}
-                  className="text-[#A1A1AA]/60 hover:text-[#C9A84C] text-xs transition-colors duration-200"
-                  style={{ fontFamily: 'var(--font-inter)' }}
-                >
+                <Link href={href} className="text-[#A1A1AA]/60 hover:text-[#C9A84C] text-xs transition-colors duration-200" style={{ fontFamily: 'var(--font-inter)' }}>
                   {label}
                 </Link>
-                {i < arr.length - 1 && (
-                  <span className="text-[#C9A84C]/25 text-xs" aria-hidden="true">|</span>
-                )}
+                {i < arr.length - 1 && <span className="text-[#C9A84C]/25 text-xs" aria-hidden="true">|</span>}
               </span>
             ))}
           </nav>

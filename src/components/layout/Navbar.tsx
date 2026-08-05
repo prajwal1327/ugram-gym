@@ -2,9 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import LionSVG from '@/components/common/LionSVG';
 
 const NAV_LINKS = [
   { href: '/',                  label: 'Home' },
@@ -32,7 +32,6 @@ export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
 
-  // Scroll detection
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 24);
     window.addEventListener('scroll', onScroll, { passive: true });
@@ -40,12 +39,8 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close mobile menu on route change
-  useEffect(() => {
-    setIsMobileOpen(false);
-  }, [pathname]);
+  useEffect(() => { setIsMobileOpen(false); }, [pathname]);
 
-  // Lock body scroll when mobile menu open
   useEffect(() => {
     document.body.style.overflow = isMobileOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -65,7 +60,7 @@ export default function Navbar() {
         transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
         className={`fixed top-0 inset-x-0 z-[100] transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#0A0A0A]/95 backdrop-blur-xl border-b border-[#C9A84C]/20 shadow-[0_4px_40px_rgba(0,0,0,0.6)]'
+            ? 'bg-[#0A0A0A]/96 backdrop-blur-xl border-b border-[#C9A84C]/20 shadow-[0_4px_40px_rgba(0,0,0,0.7)]'
             : 'bg-transparent'
         }`}
         role="banner"
@@ -77,28 +72,41 @@ export default function Navbar() {
           {/* ── Logo ── */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 shrink-0 group"
+            className="flex items-center gap-3 shrink-0 group"
             aria-label="UGRAMM FITNESS — Home"
           >
             <motion.div
-              whileHover={{ rotate: 8, scale: 1.05 }}
+              whileHover={{ scale: 1.08, rotate: 5 }}
               transition={{ type: 'spring', stiffness: 350, damping: 18 }}
+              className="relative w-10 h-10 md:w-12 md:h-12 shrink-0"
+              style={{ filter: 'drop-shadow(0 0 8px rgba(201,168,76,0.3))' }}
             >
-              <LionSVG size={34} color="#C9A84C" />
+              <Image
+                src="/images/logo.jpeg"
+                alt="UGRAMM FITNESS Logo"
+                fill
+                className="object-cover rounded-full"
+                style={{ border: '1.5px solid rgba(201,168,76,0.45)' }}
+              />
             </motion.div>
-            <span
-              className="hidden sm:block text-xl md:text-2xl font-black tracking-[0.18em] bg-gradient-to-r from-[#C9A84C] via-[#E8D5A3] to-[#C9A84C] bg-clip-text text-transparent leading-none"
-              style={{ fontFamily: 'var(--font-bebas)' }}
-            >
-              UGRAMM FITNESS
-            </span>
+            <div className="hidden sm:block">
+              <span
+                className="block text-xl md:text-2xl font-black tracking-[0.18em] bg-gradient-to-r from-[#C9A84C] via-[#E8D5A3] to-[#C9A84C] bg-clip-text text-transparent leading-none"
+                style={{ fontFamily: 'var(--font-bebas)' }}
+              >
+                UGRAMM FITNESS
+              </span>
+              <span
+                className="block text-[8px] tracking-[0.35em] text-white/30 uppercase leading-none mt-0.5"
+                style={{ fontFamily: 'var(--font-montserrat)' }}
+              >
+                Est. 2026 · Bidar
+              </span>
+            </div>
           </Link>
 
           {/* ── Desktop nav links ── */}
-          <ul
-            className="hidden lg:flex items-center gap-0.5"
-            role="list"
-          >
+          <ul className="hidden lg:flex items-center gap-0.5" role="list">
             {NAV_LINKS.map(link => (
               <li key={link.href}>
                 <Link
@@ -134,7 +142,6 @@ export default function Navbar() {
             >
               <WhatsAppIcon />
             </a>
-
             <Link
               href="/join"
               className="bg-gradient-to-r from-[#C9A84C] to-[#D4AF37] text-black font-bold px-6 py-2.5 rounded-full text-[10px] tracking-[0.18em] uppercase hover:shadow-[0_0_28px_rgba(201,168,76,0.55)] hover:scale-[1.03] transition-all duration-300 active:scale-[0.98]"
@@ -185,19 +192,37 @@ export default function Navbar() {
             transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="fixed inset-0 z-[99] lg:hidden bg-[#0A0A0A] flex flex-col"
           >
-            {/* Background glow */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(201,168,76,0.07)_0%,transparent_100%)] pointer-events-none" />
+            {/* Lion crown watermark */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <Image
+                src="/images/lion-crown.webp"
+                alt=""
+                fill
+                className="object-cover object-center"
+                style={{ opacity: 0.04 }}
+                aria-hidden="true"
+              />
+              <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(201,168,76,0.06)_0%,transparent_100%)]" />
+            </div>
             {/* Top gold line */}
             <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#C9A84C]/40 to-transparent" />
 
-            {/* Header spacer */}
             <div className="h-16" aria-hidden="true" />
 
-            {/* Nav items */}
-            <ul
-              className="flex-1 flex flex-col items-center justify-center gap-1 px-6 relative"
-              role="list"
+            {/* Center logo in mobile menu */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1, duration: 0.5 }}
+              className="flex justify-center mt-4 mb-2"
             >
+              <div className="relative w-20 h-20" style={{ filter: 'drop-shadow(0 0 20px rgba(201,168,76,0.4))' }}>
+                <Image src="/images/logo.jpeg" alt="UGRAMM FITNESS" fill className="object-cover rounded-full" />
+              </div>
+            </motion.div>
+
+            {/* Nav items */}
+            <ul className="flex-1 flex flex-col items-center justify-center gap-1 px-6 relative" role="list">
               {NAV_LINKS.map((link, i) => (
                 <motion.li
                   key={link.href}
@@ -222,7 +247,6 @@ export default function Navbar() {
                 </motion.li>
               ))}
 
-              {/* Mobile CTA buttons */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -249,18 +273,14 @@ export default function Navbar() {
               </motion.div>
             </ul>
 
-            {/* Bottom info */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.55 }}
               className="pb-8 text-center relative"
             >
-              <p
-                className="text-[#A1A1AA]/50 text-[9px] tracking-[0.35em] uppercase"
-                style={{ fontFamily: 'var(--font-inter)' }}
-              >
-                Bidar, Karnataka 585401
+              <p className="text-[#A1A1AA]/40 text-[9px] tracking-[0.35em] uppercase" style={{ fontFamily: 'var(--font-inter)' }}>
+                Bidar, Karnataka 585401 · Est. 2026
               </p>
             </motion.div>
           </motion.div>
