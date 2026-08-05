@@ -31,11 +31,11 @@ export default function Hero() {
           alt="Lion"
           fill
           priority
-          className="object-cover object-center"
-          style={{ opacity: 0.35 }}
+          className="object-cover object-top"
+          style={{ opacity: 0.55 }}
         />
-        {/* Dark overlay to keep text readable */}
-        <div className="absolute inset-0 bg-black/60" />
+        {/* Dark gradient overlay — darker at bottom to keep text readable */}
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.75) 100%)' }} />
         {/* Radial gold gradient */}
         <div
           className="absolute inset-0"

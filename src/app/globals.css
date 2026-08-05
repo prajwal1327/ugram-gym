@@ -36,21 +36,20 @@ body {
   cursor: none;
 }
 
-/* Restore real cursor in admin panel */
-.admin-area,
-.admin-area * {
+/* Restore real cursor in admin panel — must beat the injected cursor:none!important */
+html .admin-area,
+html .admin-area * {
   cursor: auto !important;
 }
-.admin-area input,
-.admin-area select,
-.admin-area textarea {
+html .admin-area input,
+html .admin-area select,
+html .admin-area textarea {
   cursor: text !important;
 }
-.admin-area button,
-.admin-area a,
-.admin-area [role="button"],
-.admin-area label[for],
-.admin-area label.cursor-pointer {
+html .admin-area button,
+html .admin-area a,
+html .admin-area [role="button"],
+html .admin-area label {
   cursor: pointer !important;
 }
 

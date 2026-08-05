@@ -1,127 +1,97 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { motion, useMotionValue, useSpring } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
-/**
- * Premium custom cursor — small gold dot + lagging ring.
- * Rendered only on pointer-capable (non-touch) devices.
- * Hides the default cursor site-wide via an injected <style>.
- */
 export default function AnimatedCursor() {
-  const [isMounted, setIsMounted]   = useState(false);
-  const [isPointer, setIsPointer]   = useState(false);
-  const [isVisible, setIsVisible]   = useState(false);
-  const [isHovering, setIsHovering] = useState(false);
-
-  // Raw mouse position (dot follows immediately)
-  const mouseX = useMotionValue(-200);
-  const mouseY = useMotionValue(-200);
-
-  // Ring follows with spring delay
-  const springCfg = { damping: 22, stiffness: 180, mass: 0.6 };
-  const ringX = useSpring(mouseX, springCfg);
-  const ringY = useSpring(mouseY, springCfg);
-
-  const rafRef = useRef<number | null>(null);
+  const cursorRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  const mouse = useRef({ x: -200, y: -200 });
+  const pos = useRef({ x: -200, y: -200 });
+  const currentSize = useRef(8);
+  const targetSize = useRef(8);
+  const isHover = useRef(false);
+  const rafId = useRef<number | null>(null);
 
   useEffect(() => {
-    // Only activate on devices that support hover (non-touch)
-    const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
-    if (!mq.matches) return;
-
-    setIsMounted(true);
-    setIsPointer(true);
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    setMounted(true);
 
     const onMove = (e: MouseEvent) => {
-      if (!isVisible) setIsVisible(true);
-      mouseX.set(e.clientX);
-      mouseY.set(e.clientY);
+      mouse.current = { x: e.clientX, y: e.clientY };
     };
 
     const onOver = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
-      const interactive =
-        el.closest('a, button, [role="button"], input, textarea, select, label, [tabindex]') !== null ||
-        getComputedStyle(el).cursor === 'pointer';
-      if (interactive) setIsHovering(true);
+      if (el.closest('a, button, [role="button"], label')) {
+        isHover.current = true;
+        targetSize.current = 30;
+      }
     };
 
     const onOut = (e: MouseEvent) => {
       const el = e.target as HTMLElement;
-      const interactive =
-        el.closest('a, button, [role="button"], input, textarea, select, label, [tabindex]') !== null;
-      if (interactive) setIsHovering(false);
+      if (el.closest('a, button, [role="button"], label')) {
+        isHover.current = false;
+        targetSize.current = 8;
+      }
     };
 
-    const onLeave = () => setIsVisible(false);
-    const onEnter = () => setIsVisible(true);
+    const tick = () => {
+      // Smooth position lerp
+      pos.current.x += (mouse.current.x - pos.current.x) * 0.16;
+      pos.current.y += (mouse.current.y - pos.current.y) * 0.16;
 
-    window.addEventListener('mousemove',   onMove,  { passive: true });
-    document.addEventListener('mouseover', onOver,  { passive: true });
-    document.addEventListener('mouseout',  onOut,   { passive: true });
-    document.addEventListener('mouseleave', onLeave, { passive: true });
-    document.addEventListener('mouseenter', onEnter, { passive: true });
+      // Smooth size lerp
+      currentSize.current += (targetSize.current - currentSize.current) * 0.18;
+      const s = currentSize.current;
+
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${pos.current.x - s / 2}px, ${pos.current.y - s / 2}px)`;
+        cursorRef.current.style.width = `${s}px`;
+        cursorRef.current.style.height = `${s}px`;
+        cursorRef.current.style.backgroundColor = isHover.current
+          ? 'rgba(201,168,76,0.2)'
+          : '#C9A84C';
+        cursorRef.current.style.border = isHover.current
+          ? '1.5px solid #C9A84C'
+          : 'none';
+      }
+
+      rafId.current = requestAnimationFrame(tick);
+    };
+
+    window.addEventListener('mousemove', onMove, { passive: true });
+    document.addEventListener('mouseover', onOver, { passive: true });
+    document.addEventListener('mouseout', onOut, { passive: true });
+    rafId.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener('mousemove',    onMove);
-      document.removeEventListener('mouseover',  onOver);
-      document.removeEventListener('mouseout',   onOut);
-      document.removeEventListener('mouseleave', onLeave);
-      document.removeEventListener('mouseenter', onEnter);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseover', onOver);
+      document.removeEventListener('mouseout', onOut);
+      if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [mouseX, mouseY, isVisible]);
+  }, []);
 
-  // Don't render at all on touch/no-hover devices or during SSR
-  if (!isMounted || !isPointer) return null;
+  if (!mounted) return null;
 
   return (
     <>
-      {/* ── Global style: hide default cursor ── */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `html, html * { cursor: none !important; }`,
-        }}
-      />
-
-      {/* ── Dot (follows instantly) ── */}
-      <motion.div
+      <style dangerouslySetInnerHTML={{ __html: `html, html * { cursor: none !important; }` }} />
+      <div
+        ref={cursorRef}
         aria-hidden="true"
-        className="fixed top-0 left-0 z-[99999] pointer-events-none rounded-full bg-[#C9A84C]"
         style={{
-          width: 6,
-          height: 6,
-          x: mouseX,
-          y: mouseY,
-          translateX: '-50%',
-          translateY: '-50%',
-          opacity: isVisible ? 1 : 0,
-          transition: 'opacity 0.15s',
-        }}
-      />
-
-      {/* ── Ring (spring-delayed) ── */}
-      <motion.div
-        aria-hidden="true"
-        className="fixed top-0 left-0 z-[99998] pointer-events-none rounded-full border border-[#C9A84C]"
-        style={{
-          x: ringX,
-          y: ringY,
-          translateX: '-50%',
-          translateY: '-50%',
-          opacity: isVisible ? (isHovering ? 0.75 : 0.35) : 0,
-        }}
-        animate={{
-          width:  isHovering ? 44 : 28,
-          height: isHovering ? 44 : 28,
-          backgroundColor: isHovering ? 'rgba(201,168,76,0.12)' : 'rgba(201,168,76,0)',
-        }}
-        transition={{
-          width:  { type: 'spring', stiffness: 260, damping: 22 },
-          height: { type: 'spring', stiffness: 260, damping: 22 },
-          backgroundColor: { duration: 0.2 },
-          opacity: { duration: 0.15 },
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: 8,
+          height: 8,
+          borderRadius: '50%',
+          backgroundColor: '#C9A84C',
+          pointerEvents: 'none',
+          zIndex: 99999,
+          willChange: 'transform',
         }}
       />
     </>

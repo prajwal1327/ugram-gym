@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className="bg-[#0A0A0A] overflow-x-hidden">
+    <div className="bg-[#0A0A0A] overflow-x-hidden">
       {/* HERO — full viewport, epic first impression */}
       <Hero />
 
@@ -69,6 +69,6 @@ export default function HomePage() {
 
       {/* CONTACT — location, hours, maps */}
       <ContactSection />
-    </main>
+    </div>
   );
 }
